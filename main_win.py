@@ -6,7 +6,13 @@
 #
 # WARNING! All changes made in this file will be lost!
 
+import base64
 from PyQt5 import QtCore, QtGui, QtWidgets
+from images.location_of_plants_in_jilin_png import img as location_of_plants_in_jilin
+
+tmp = open('location_of_plants_in_jilin.png', 'wb')        #创建临时的文件
+tmp.write(base64.b64decode(location_of_plants_in_jilin))    ##把这个one图片解码出来，写入文件中去。
+tmp.close()
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
