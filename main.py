@@ -3,10 +3,11 @@
 
 import os
 import sys
-from main_win import *
+from UI_main_win import *
 from UI_show_plot import *
 from UI_cloud_image import *
 from UI_pattern_true import *
+from UI_forecast import *
 from PyQt5.QtWidgets import QApplication, QMainWindow
 from PyQt5.QtGui import QFont
 
@@ -31,6 +32,12 @@ class MyWindow_pattern_true(QMainWindow, Ui_MainWindow_pattern_true):
     def __init__(self, parent=None):
         super(MyWindow_pattern_true, self).__init__(parent)
         self.setupUi(self)
+
+class MyWindow_forecast(QMainWindow, Ui_MainWindow_forecast):
+    def __init__(self, parent=None):
+        super(MyWindow_forecast, self).__init__(parent)
+        self.setupUi(self)
+
 
 if __name__ == '__main__':
     # 字体随分辨率自适应
@@ -57,6 +64,12 @@ if __name__ == '__main__':
 
     btn_pattern_true = myWin.pushButton_4
     btn_pattern_true.clicked.connect(Window_pattern_true.show)
+
+    # 跳转页面4
+    Window_forecast = MyWindow_forecast()
+
+    btn_forecast = myWin.pushButton_5
+    btn_forecast.clicked.connect(Window_forecast.show)
 
     # window_cloud_image = MyWindow_cloud_image()
     # btn = myWin.pushButton_3
