@@ -7,10 +7,16 @@
 # WARNING! All changes made in this file will be lost!
 
 import sys
+import base64
+from images.cloud_image_jpg import img as cloud_image
 from PyQt5.QtWidgets import QApplication, QMainWindow
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
+
+tmp = open('cloud_image.jpg', 'wb')        #创建临时的文件
+tmp.write(base64.b64decode(cloud_image))    ##把这个one图片解码出来，写入文件中去。
+tmp.close()
 
 class Ui_MainWindow_cloud_image(object):
     def setupUi(self, MainWindow):
@@ -38,7 +44,7 @@ class Ui_MainWindow_cloud_image(object):
         self.label_15 = QtWidgets.QLabel(self.layoutWidget)
         self.label_15.setObjectName("label_15")
         self.horizontalLayout_11.addWidget(self.label_15)
-        self.dateTimeEdit_5 = QtWidgets.QDateTimeEdit(QDateTime.currentDateTime(), self.layoutWidget)
+        self.dateTimeEdit_5 = QtWidgets.QDateTimeEdit(QtCore.QDateTime(QtCore.QDate(2017, 1, 1), QtCore.QTime(0, 0, 0)))
         self.dateTimeEdit_5.setObjectName("dateTimeEdit_5")
         self.dateTimeEdit_5.setDisplayFormat("yyyy/MM/dd HH-mm-ss")
         self.horizontalLayout_11.addWidget(self.dateTimeEdit_5)
@@ -48,7 +54,7 @@ class Ui_MainWindow_cloud_image(object):
         self.label_16 = QtWidgets.QLabel(self.layoutWidget)
         self.label_16.setObjectName("label_16")
         self.horizontalLayout_12.addWidget(self.label_16)
-        self.dateTimeEdit_6 = QtWidgets.QDateTimeEdit(QDateTime.currentDateTime(),self.layoutWidget)
+        self.dateTimeEdit_6 = QtWidgets.QDateTimeEdit(QtCore.QDateTime(QtCore.QDate(2017, 1, 1), QtCore.QTime(0, 0, 0)))
         self.dateTimeEdit_6.setObjectName("dateTimeEdit_6")
         self.dateTimeEdit_6.setDisplayFormat("yyyy/MM/dd HH-mm-ss")
         self.horizontalLayout_12.addWidget(self.dateTimeEdit_6)
@@ -118,6 +124,8 @@ class Ui_MainWindow_cloud_image(object):
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
 
+        self.pushButton.clicked.connect(self.slot)
+
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
@@ -137,4 +145,9 @@ class Ui_MainWindow_cloud_image(object):
         self.label_4.setText(_translate("MainWindow", "<html><head/><body><p align=\"center\"><span style=\" font-size:18pt;\">电站</span></p></body></html>"))
         self.comboBox_7.setItemText(1, _translate("MainWindow", "风电"))
         self.comboBox_7.setItemText(2, _translate("MainWindow", "光伏"))
+
+    def slot(self):
+        self.graphicsView.setStyleSheet(
+            "image: url(cloud_image.jpg);\n"
+            "border-image: url(cloud_image.jpg);")
 

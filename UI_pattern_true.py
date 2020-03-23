@@ -7,10 +7,21 @@
 # WARNING! All changes made in this file will be lost!
 
 import sys
+import base64
+from images.cloud_corr_jpg import img as cloud_corr
+from images.wind_corr_jpg import img as wind_corr
 from PyQt5.QtWidgets import QApplication, QMainWindow
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
+
+tmp = open('cloud_corr.jpg', 'wb')        #创建临时的文件
+tmp.write(base64.b64decode(cloud_corr))    ##把这个one图片解码出来，写入文件中去。
+tmp.close()
+
+tmp = open('wind_corr.jpg', 'wb')        #创建临时的文件
+tmp.write(base64.b64decode(wind_corr))    ##把这个one图片解码出来，写入文件中去。
+tmp.close()
 
 class Ui_MainWindow_pattern_true(object):
     def setupUi(self, MainWindow):
@@ -107,7 +118,7 @@ class Ui_MainWindow_pattern_true(object):
         self.label_19 = QtWidgets.QLabel(self.widget)
         self.label_19.setObjectName("label_19")
         self.horizontalLayout_16.addWidget(self.label_19)
-        self.dateTimeEdit_7 = QtWidgets.QDateTimeEdit(QDateTime.currentDateTime(),self.widget)
+        self.dateTimeEdit_7 = QtWidgets.QDateTimeEdit(QtCore.QDateTime(QtCore.QDate(2017, 1, 1), QtCore.QTime(0, 0, 0)))
         self.dateTimeEdit_7.setObjectName("dateTimeEdit_7")
         self.dateTimeEdit_7.setDisplayFormat("yyyy/MM/dd HH-mm-ss")
         self.horizontalLayout_16.addWidget(self.dateTimeEdit_7)
@@ -119,7 +130,7 @@ class Ui_MainWindow_pattern_true(object):
         self.label_20 = QtWidgets.QLabel(self.widget)
         self.label_20.setObjectName("label_20")
         self.horizontalLayout_17.addWidget(self.label_20)
-        self.dateTimeEdit_8 = QtWidgets.QDateTimeEdit(QDateTime.currentDateTime(),self.widget)
+        self.dateTimeEdit_8 = QtWidgets.QDateTimeEdit(QtCore.QDateTime(QtCore.QDate(2017, 1, 1), QtCore.QTime(0, 0, 0)))
         self.dateTimeEdit_8.setObjectName("dateTimeEdit_8")
         self.dateTimeEdit_8.setDisplayFormat("yyyy/MM/dd HH-mm-ss")
         self.horizontalLayout_17.addWidget(self.dateTimeEdit_8)
@@ -165,12 +176,12 @@ class Ui_MainWindow_pattern_true(object):
 
     def slot_1(self):
         self.graphicsView.setStyleSheet(
-            "image: url(cloud_image.jpg);\n"
+            "image: url(wind_corr.jpg);\n"
             "border-image: url(wind_corr.jpg);")
 
     def slot_2(self):
         self.graphicsView.setStyleSheet(
-            "image: url(cloud_image.jpg);\n"
+            "image: url(cloud_corr.jpg);\n"
             "border-image: url(cloud_corr.jpg);")
 
 class MyWindow(QMainWindow, Ui_MainWindow_pattern_true):

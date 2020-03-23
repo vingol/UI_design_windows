@@ -47,6 +47,7 @@ class Ui_MainWindow(object):
         self.tableWidget.setObjectName("tableWidget")
         self.tableWidget.setColumnCount(0)
         self.tableWidget.setRowCount(0)
+        self.tableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
         self.dir_data_2 = QtWidgets.QLabel(self.centralwidget)
         self.dir_data_2.setGeometry(QtCore.QRect(560, 150, 151, 31))
         self.dir_data_2.setObjectName("dir_data_2")

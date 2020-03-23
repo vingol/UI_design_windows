@@ -7,6 +7,46 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+import pandas as pd
+import numpy as np
+from matplotlib.figure import Figure
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+from PyQt5.QtWidgets import *
+from PyQt5.QtCore import *
+from main_cs import main_cs
+
+class PlotCanvas(FigureCanvas):
+
+    def __init__(self, parent=None, width=5, height=4, dpi=100):
+        fig = Figure(figsize=(width, height), dpi=dpi)
+        self.axes = fig.add_subplot(111)
+
+        FigureCanvas.__init__(self, fig)
+        self.setParent(parent)
+
+        FigureCanvas.setSizePolicy(self,
+                                   QSizePolicy.Expanding,
+                                   QSizePolicy.Expanding)
+        FigureCanvas.updateGeometry(self)
+        # self.init_plot()#打开App时可以初始化图片
+        # self.plot()
+
+    def plot(self):
+
+        timer = QTimer(self)
+        timer.timeout.connect(self.update_figure)
+        timer.start(100)
+
+    def init_plot(self, data, date=1):
+
+        data[date * 96: (date + 1) * 96].plot(ax=self.axes)
+        self.draw()
+
+    def update_figure(self, data, start_time, end_time):
+
+        self.axes.cla()
+        data.loc[start_time:end_time].plot(ax=self.axes)
+        self.draw()
 
 class Ui_MainWindow_forecast(object):
     def setupUi(self, MainWindow):
@@ -26,11 +66,15 @@ class Ui_MainWindow_forecast(object):
         self.label = QtWidgets.QLabel(self.centralwidget)
         self.label.setGeometry(QtCore.QRect(20, 0, 371, 31))
         self.label.setObjectName("label")
-        self.graphicsView = QtWidgets.QGraphicsView(self.centralwidget)
-        self.graphicsView.setGeometry(QtCore.QRect(50, 130, 401, 331))
-        self.graphicsView.setMinimumSize(QtCore.QSize(401, 331))
-        self.graphicsView.setMaximumSize(QtCore.QSize(401, 331))
-        self.graphicsView.setObjectName("graphicsView")
+
+        # self.graphicsView = QtWidgets.QGraphicsView(self.centralwidget)
+        # self.graphicsView.setGeometry(QtCore.QRect(50, 130, 401, 331))
+        # self.graphicsView.setMinimumSize(QtCore.QSize(401, 331))
+        # self.graphicsView.setMaximumSize(QtCore.QSize(401, 331))
+        # self.graphicsView.setObjectName("graphicsView")
+        self.m = PlotCanvas(self, width=4, height=3)  # 实例化一个画布对象
+        self.m.move(50, 130)
+
         self.layoutWidget_3 = QtWidgets.QWidget(self.centralwidget)
         self.layoutWidget_3.setGeometry(QtCore.QRect(490, 160, 300, 31))
         self.layoutWidget_3.setObjectName("layoutWidget_3")
@@ -129,6 +173,8 @@ class Ui_MainWindow_forecast(object):
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
 
+        # self.pushButton_2.clicked.connect(hello)
+
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
@@ -156,4 +202,12 @@ class Ui_MainWindow_forecast(object):
         self.label_4.setText(_translate("MainWindow", "均方根误差/MW"))
         self.label_5.setText(_translate("MainWindow", "合格率%"))
         self.label_6.setText(_translate("MainWindow", "准确率%"))
+
+    def plot_(self):
+        import datetime
+        start_time = self.dateTimeEdit_9.text()
+        end_time = self.dateTimeEdit_10.text()
+        y_hat_all, y_true_all, RMSE_ = main_cs()
+        # print(input_data[:10])
+        self.m.update_figure(y_hat_all['var1(t)'], self.str_datetime(start_time), self.str_datetime(end_time))
 
